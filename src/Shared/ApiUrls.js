@@ -1,4 +1,6 @@
-export const  BaseUrl = "http://192.168.0.199:8000/"
+
+
+export const  BaseUrl = process.env.REACT_APP_BASE_URL 
 export const ApiUrls={
     REGISTER_DATA : BaseUrl + "account/register/",
     LOGIN_DATA: BaseUrl + "account/login/",

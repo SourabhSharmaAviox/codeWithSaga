@@ -11,10 +11,8 @@ import Store from "../../Redux/store";
 const Login = () => {
     const dispatch = useDispatch();
     const history = useHistory()
-    const location = useLocation();
     const loader = useSelector(state=>state.Loader.loading)
-    console.log(loader)
-    console.log(location )
+    
     const {register , handleSubmit, formState:{errors} } = useForm();
    
 

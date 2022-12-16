@@ -28,22 +28,21 @@ const IndivualPost = ({ posts ,refreshPosts }) => {
   const delteHandler =(delObj)=>{
     dispatch(deletePostAction(delObj.id,(message,type)=>{
       ToastNotification(message,type)
-      //refreshing all posts after deletion
       refreshPosts();
-    }))
-    ModalClose();
-  }
+    })) 
 
-  const getUpdatedDataHandler=(formdata,id)=>{
-    console.log("formdata", formdata);
-    
+    ModalClose();
+  }  
+
+  const getUpdatedDataHandler=(formdata,id)=>{        
     dispatch(
       updatePostAction(formdata,id, (message, type) => {
       ToastNotification(message, type);
       refreshPosts();
     }))
     ModalClose();
-  }
+  } 
+  
 
   return (
     <>

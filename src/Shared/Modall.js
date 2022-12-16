@@ -29,7 +29,7 @@ const Modall = ({ ModalOpen,postDetail, handleClose = () => {},delteHandler=()=>
   return (
     <div>
       <Dialog
-        fullScreen= {`${ModalOpen.actionType=="Edit"?"fullScreen":""}`}
+        fullScreen= {ModalOpen.actionType=="Edit"?true:false}
         open={ModalOpen.status}
         TransitionComponent={Transition}
         keepMounted

@@ -14,9 +14,8 @@ const CreatePost = () => {
   } = useForm();
 
   const submitHandler = (data) => {
-    console.log(data,"data")
+    
     const val = Object.values(data.postImage);
-    console.log(val)
     const formData = new FormData();
     formData.append("title", data["title"]);
     formData.append("post_image", val[0]);

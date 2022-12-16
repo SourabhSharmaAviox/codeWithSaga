@@ -6,6 +6,8 @@ import { StartLoader, StopLoader } from "../Actions/Loader";
 import { SaveAllPostAction } from "../Actions/PostActions";
 import Store from "../store";
 
+
+
 function* postRegisterDataFn({ payload, callback }) {
   try {
     yield put(StartLoader());
@@ -15,7 +17,7 @@ function* postRegisterDataFn({ payload, callback }) {
       headers: { "Content-Type": "application/json" },
     });
 
-    if (response.status == 201 || response.status == 200) {
+    if(response.status == 201 || response.status == 200) {
       callback("You are succesfully registred", "success");
     } else if (response.status >= 400 || response.status <= 499) {
       callback("Username is Already registred", "info");
@@ -40,10 +42,6 @@ function* postLoginDataFn({ payload, callback }) {
     if (response.status == 201 || response.status == 200) {
       const res = yield response.json();
       callback("You are succesfully logged In", "success");
-      const userData = {
-        username: payload.username,
-        token: res.Data.token.access,
-      };
 
       delete payload.password;
       payload.token = res.Data.token.access;
@@ -113,6 +111,34 @@ function* getAllPostFn({ callback }) {
   }
 }
 
+function* updatePostFn({ payload, id, callback }) {
+  try {
+    yield put(StartLoader());
+
+    const response = yield fetch(`${ApiUrls.UPDATE_POST_API}${id}`, {
+      method: ApiMethods.PATCH,
+      body: payload,
+      headers: {
+        Authorization: `Bearer ${Store?.getState()?.Auth?.isAuth}`,
+      },
+    });
+  
+    const res = yield response.json();
+    if (response.status >= 200 || response.status <= 299) {
+      callback(res.Message, "success");
+    } else if (response.status >= 400 || response.status <= 499) {
+      callback(res.Message, "warn");
+    } else {
+      callback(res.Message, "warn");
+    }
+  } catch (err) {
+    console.log("errror", err);
+    callback("Something went wrong", "error");
+  } finally {
+    yield put(StopLoader());
+  }
+}
+
 function* deletePostfn({ payload, callback }) {
   try {
     yield put(StartLoader());
@@ -138,41 +164,13 @@ function* deletePostfn({ payload, callback }) {
   }
 }
 
-function* updatePostFn({ payload, id, callback }) {
-  try {
-    yield put(StartLoader());
-
-    const response = yield fetch(`${ApiUrls.UPDATE_POST_API}${id}`, {
-      method: ApiMethods.PATCH,
-      body: payload,
-      headers: {
-        Authorization: `Bearer ${Store?.getState()?.Auth?.isAuth}`,
-      },
-    });
-    console.log(response);
-    const res = yield response.json();
-    if (response.status >= 200 || response.status <= 299) {
-      callback(res.Message, "success");
-    } else if (response.status >= 400 || response.status <= 499) {
-      callback(res.Message, "warn");
-    } else {
-      callback(res.Message, "warn");
-    }
-  } catch (err) {
-    console.log("errror", err);
-    callback("Something went wrong", "error");
-  } finally {
-    yield put(StopLoader());
-  }
-}
-
 export function* watcherFunction() {
   yield all([
     takeLatest(ActionsObject.POST_REGISTER_FORM_DATA, postRegisterDataFn),
     takeLatest(ActionsObject.POST_LOGIN_FORM_DATA, postLoginDataFn),
     takeLatest(ActionsObject.POST_CREATE_POST_FORMDATA, postCreateFormDataFn),
     takeLatest(ActionsObject.GET_ALL_POST, getAllPostFn),
-    takeLatest(ActionsObject.DELETE_POST, deletePostfn),
     takeLatest(ActionsObject.UPDATE_POST, updatePostFn),
+    takeLatest(ActionsObject.DELETE_POST, deletePostfn),
   ]);
 }

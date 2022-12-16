@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import {  useDispatch, useSelector } from "react-redux";
-import { NavLink, Redirect, useHistory, useLocation } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { AuthRemove } from "../../Redux/Actions/AuthAction";
-import { ColorContext } from "../Contexts/colorContext";
+
 
 const Header = () => {
-  const {color}= useContext(ColorContext)
+  
   const isAuth = useSelector(state=>state.Auth.isAuth)
   const dispatch = useDispatch()
   const history = useHistory();
@@ -17,7 +17,7 @@ const Header = () => {
   
 
   return (<>
-    <nav className={`navbar navbar-expand-lg ${color?"bg-success" :'bg-primary'} `}>
+    <nav className={`navbar navbar-expand-lg bg-primary`}>
       <div className="container-fluid">
         <NavLink className="navbar-brand" to={"/"}>
           ROUTES

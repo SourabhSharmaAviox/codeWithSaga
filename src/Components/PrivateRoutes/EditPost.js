@@ -51,7 +51,7 @@ const EditPost = ({PostDetails ,getUpdatedData=()=>{}}) => {
     })
    
     const val = Object.values(data.post_image);      
-     console.log(val[0])
+     
     const formData = new FormData();
     formData.append("title", data["title"]);
     formData.append("post_image", data.post_image == PostDetails?.post_image ? filless :  val[0]  );
@@ -67,7 +67,7 @@ const EditPost = ({PostDetails ,getUpdatedData=()=>{}}) => {
   
   useEffect(()=>{
   reset(PostDetails)
- console.log(watch("post_image"))
+ 
   },[PostDetails?.id])
   return (
     <>
